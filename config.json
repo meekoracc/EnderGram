@@ -1,0 +1,43 @@
+{
+  "PORT": 8000,
+
+  "USE_WEBHOOKS": true,
+  "WEBHOOK_URL": "DISCORD_WEBHOOK_URL_HERE",
+  "IGNORE_WEBHOOKS": true,
+  "TELEGRAM_TOKEN": "TELEGRAMTOKEN",
+  "TELEGRAM_CHAT_ID": "GETCHATIDANDPUTHERE",
+  "TELEGRAM_CHAT_NAME": "#bot",
+  "TELEGRAM_MESSAGE_TEMPLATE": "%username%: %message%",
+
+  "MINECRAFT_SERVER_RCON_IP": "127.0.0.1",
+  "MINECRAFT_SERVER_RCON_PORT": 25575,
+  "MINECRAFT_SERVER_RCON_PASSWORD": "password",
+  "MINECRAFT_TELLRAW_TEMPLATE": "[{\"color\": \"white\", \"text\": \"<%username%> %message%\"}]",
+  "MINECRAFT_TELLRAW_DOESNT_EXIST": false,
+  "MINECRAFT_TELLRAW_DOESNT_EXIST_SAY_TEMPLATE": "<%username%> %message%",
+
+  "IS_LOCAL_FILE": false,
+  "LOCAL_FILE_PATH": "/path/to/minecraft/logs/latest.log",
+
+  "SHOW_INIT_MESSAGE": true,
+
+  "ALLOW_USER_MENTIONS": false,
+  "ALLOW_HERE_EVERYONE_MENTIONS": false,
+  "ALLOW_SLASH_COMMANDS": false,
+  "SLASH_COMMAND_ROLES": [],
+
+  "WEBHOOK": "/minecraft/hook",
+  "REGEX_SERVER_PREFIX": "\\[Server thread/INFO\\]:",
+  "REGEX_MATCH_CHAT_MC": "^<([^>]*)> (.*)",
+  "REGEX_IGNORED_CHAT": "packets too frequently",
+  "DEBUG": true,
+
+  "SERVER_NAME": "Endergram",
+  "SERVER_IMAGE": "",
+  "SHOW_SERVER_STATUS": true,
+  "SHOW_PLAYER_CONN_STAT": true,
+  "SHOW_PLAYER_ADVANCEMENT": false,
+  "SHOW_PLAYER_DEATH": false,
+  "SHOW_PLAYER_ME": false,
+  "DEATH_KEY_WORDS": ["shot", "fell", "death", "died", "doomed", "pummeled", "removed", "didn't want", "withered", "squashed", "flames", "burnt", "walked into", "bang", "roasted", "squished", "drowned", "killed", "slain", "blown", "blew", "suffocated", "struck", "lava", "impaled", "speared", "fireballed", "finished", "kinetic"]
+}
