@@ -128,65 +128,6 @@ class MinecraftHandler {
     return null
   }
 
-  private initWebServer (callback: Callback) {
-    // init the webserver
-    this.app = express()
-
-    this.app.use((request, _response, next) => {
-      request.body = ''
-      request.setEncoding('utf8')
-
-      request.on('data', (chunk: string) => {
-        request.body += chunk
-      })
-
-      request.on('end', function () {
-        next()
-      })
-    })
-
-    this.app.post(this.config.WEBHOOK, (req, res) => {
-      if (req.body) {
-        const logLine = this.parseLogLine(req.body)
-        callback(logLine)
-      }
-      res.json({ received: true })
-    })
-
-    const port: number = Number(process.env.PORT) || this.config.PORT
-
-    this.app.listen(port, () => {
-      console.log('[INFO] Bot listening on *:' + port)
-
-      if (!this.config.IS_LOCAL_FILE && this.config.SHOW_INIT_MESSAGE) {
-        // in case someone inputs the actual path and url in the config here...
-        let mcPath: string = this.config.PATH_TO_MINECRAFT_SERVER_INSTALL || 'PATH_TO_MINECRAFT_SERVER_INSTALL'
-        const url: string = this.config.YOUR_URL || 'YOUR_URL'
-
-        const defaultPath = mcPath === 'PATH_TO_MINECRAFT_SERVER_INSTALL'
-        const defaultUrl = url === 'YOUR_URL'
-
-        console.log('[INFO] Please enter the following command on your server running the Minecraft server:')
-        if (defaultPath) {
-          console.log('       Replace "PATH_TO_MINECRAFT_SERVER_INSTALL" with the path to your Minecraft server install' + (defaultUrl ? ' and "YOUR_URL" with the URL/IP of the server running Shulker.' : ''))
-        } else {
-          if (defaultUrl) console.log('       Replace "YOUR_URL" with the URL/IP of the server running Shulker')
-        }
-
-        mcPath = (defaultPath ? '/' : '') + path.join(mcPath, '/logs/latest.log')
-
-        let grepMatch = ': <'
-        if (this.config.SHOW_PLAYER_DEATH || this.config.SHOW_PLAYER_ME || this.config.SHOW_PLAYER_ADVANCEMENT || this.config.SHOW_PLAYER_CONN_STAT) {
-          grepMatch = this.config.REGEX_SERVER_PREFIX
-        }
-        console.log(`  \`tail -F ${mcPath} | grep --line-buffered "${grepMatch}" | while read x ; do echo -ne $x | curl -X POST -d @- http://${url}:${port}${this.config.WEBHOOK} ; done\``)
-        if (grepMatch !== ': <') {
-          console.log('       Please note that the above command can send a lot of requests to the server. Disable the non-text messages (such as "SHOW_PLAYER_CONN_STAT") to reduce this if necessary.')
-        }
-      }
-    })
-  }
-
   private initTail (callback: Callback) {
     if (fs.existsSync(this.config.LOCAL_FILE_PATH)) {
       console.log(`[INFO] Using configuration for local log file at "${this.config.LOCAL_FILE_PATH}"`)
@@ -207,11 +148,7 @@ class MinecraftHandler {
   }
 
   public init (callback: Callback) {
-    if (this.config.IS_LOCAL_FILE) {
-      this.initTail(callback)
-    } else {
-      this.initWebServer(callback)
-    }
+    this.initTail(callback)
   }
 }
 

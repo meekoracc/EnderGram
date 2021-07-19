@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "module": "CommonJS",
+    "pretty": true,
     "lib": [
       "es2018",
       "esnext"
@@ -14,7 +16,9 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "outDir": "build/",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": [
     "./src/**/*"

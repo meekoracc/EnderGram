@@ -14,17 +14,27 @@ class EnderGram {
   loadConfig () {
     const configFile = (process.argv.length > 2) ? process.argv[2] : '../config.json'
     console.log('[INFO] Using configuration file:', configFile)
-    this.config = require(configFile)
-    if (!this.config) {
+    try{
+      // Get from config file
+      this.config = require(configFile);
+      const expectedKeys= Object.keys(this.config);
+      expectedKeys.reduce((result, fieldName) => {
+        const value = process.env[fieldName];
+        console.log(value, fieldName);
+        if (value != null) {
+          //@ts-ignore
+          this.config[fieldName] = JSON.parse(process.env[fieldName]);
+        }
+        return result;
+      });
+      console.log(this.config);
+    } catch(e) {
       console.log('[ERROR] Could not load config file!')
+      console.error(e);
       return false
     }
 
-    if (this.config.USE_WEBHOOKS) {
-      console.log('[INFO] Using WebHooks to send messages')
-    } else {
-      console.log('[INFO] Using the bot to send messages')
-    }
+    console.log('[INFO] Using the bot to send messages')
 
     return true
   }
