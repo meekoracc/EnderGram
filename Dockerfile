@@ -14,8 +14,8 @@ RUN npm run build
 
 RUN npm ci --only=production
 
-COPY config.json ./
+ENV LOCAL_FILE_PATH=/data/logs/latest.log CONFIG_PATH=../config.json
 
-ENV LOCAL_FILE_PATH=/serverfiles/logs/latest.log
+COPY config.json ./
 
 CMD [ "node", "build/index.js" ]

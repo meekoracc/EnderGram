@@ -12,22 +12,29 @@ class EnderGram {
   }
 
   loadConfig () {
-    const configFile = (process.argv.length > 2) ? process.argv[2] : '../config.json'
+    console.log(process.env['CONFIG_PATH']);
+    const configPath = process.env['CONFIG_PATH'] ? process.env['CONFIG_PATH'] : '../config.json'
+    const configFile = (process.argv.length > 2) ? process.argv[2] : configPath
     console.log('[INFO] Using configuration file:', configFile)
     try{
       // Get from config file
       this.config = require(configFile);
-      const expectedKeys= Object.keys(this.config);
-      expectedKeys.reduce((result, fieldName) => {
+      const expectedKeys = Object.keys(this.config);
+      console.log(expectedKeys);
+      expectedKeys.forEach((fieldName) => {
         const value = process.env[fieldName];
-        console.log(value, fieldName);
+        console.log(fieldName, value);
         if (value != null) {
-          //@ts-ignore
-          this.config[fieldName] = JSON.parse(process.env[fieldName]);
+          try{
+            //@ts-ignore
+            this.config[fieldName] = JSON.parse(process.env[fieldName]);
+          } catch(e) {
+            console.log(`[INFO] Parse fail for ${process.env[fieldName]}`)
+            //@ts-ignore
+            this.config[fieldName] = process.env[fieldName];
+          }
         }
-        return result;
       });
-      console.log(this.config);
     } catch(e) {
       console.log('[ERROR] Could not load config file!')
       console.error(e);
